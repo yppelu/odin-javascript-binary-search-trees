@@ -33,6 +33,22 @@ class Tree {
 
     return node;
   }
+
+  insert(value) {
+    if (!this.root) return null;
+
+    let cursor = this.root;
+    while (cursor.data !== value) {
+      if (cursor.data > value) {
+        if (cursor.left) cursor = cursor.left;
+        else cursor.left = new Node(value);
+      } else {
+        if (cursor.right) cursor = cursor.right;
+        else cursor.right = new Node(value);
+      }
+    }
+    return cursor;
+  }
 }
 
 function getArray(length) {
