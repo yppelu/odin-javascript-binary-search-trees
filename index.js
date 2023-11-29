@@ -41,6 +41,43 @@ class Tree {
     return cursor;
   }
 
+  delete(value, root = this.root) {
+    if (!root) return root;
+
+    if (root.data > value) {
+      root.left = this.delete(value, root.left);
+      return root;
+    }
+    if (root.data < value) {
+      root.right = this.delete(value, root.right);
+      return root;
+    }
+
+    if (!root.left || !root.right) {
+      let tmp = root.left ?? root.right;
+      root = null;
+      return tmp;
+    } else {
+      let cursor = root;
+      let successor = root.right;
+      while (successor.left) {
+        cursor = successor;
+        successor = successor.left;
+      }
+
+      if (cursor !== root) {
+        cursor.left = successor.right;
+      } else {
+        cursor.right = successor.right;
+      }
+
+      root.data = successor.data;
+
+      successor = null;
+      return root;
+    }
+  }
+
   find(value) {
     if (!this.root || value === undefined) return null;
 
