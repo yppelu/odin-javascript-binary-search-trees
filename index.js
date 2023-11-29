@@ -7,24 +7,7 @@ class Node {
 }
 
 class Tree {
-  constructor(array) {
-    const preparedArray = array ? this.prepareArray(array) : [];
-    this.root = this.buildTree(preparedArray, 0, preparedArray.length - 1);
-  }
-
-  prepareArray(array) {
-    const preparedArray = array.slice();
-    preparedArray.sort((a, b) => a - b);
-    for (let i = 1; i < preparedArray.length; i++) {
-      if (preparedArray[i] === preparedArray[i - 1]) {
-        preparedArray.splice(i, 1);
-        i--;
-      }
-    }
-    return preparedArray;
-  }
-
-  buildTree(array, start, end) {
+  static buildTree(array, start, end) {
     if (start > end) return null;
 
     const middleIndex = Math.floor((start + end) / 2);
@@ -33,6 +16,13 @@ class Tree {
     node.right = this.buildTree(array, middleIndex + 1, end);
 
     return node;
+  }
+
+  constructor(array) {
+    const preparedArray = (array)
+      ? Array.from(new Set(array)).sort((a, b) => a - b)
+      : [];
+    this.root = Tree.buildTree(preparedArray, 0, preparedArray.length - 1);
   }
 
   insert(value) {
