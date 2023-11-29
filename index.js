@@ -8,12 +8,13 @@ class Node {
 
 class Tree {
   constructor(array) {
-    const preparedArray = this.prepareArray(array);
+    const preparedArray = array ? this.prepareArray(array) : [];
     this.root = this.buildTree(preparedArray, 0, preparedArray.length - 1);
   }
 
   prepareArray(array) {
-    const preparedArray = array.toSorted((a, b) => a - b);
+    const preparedArray = array.slice();
+    preparedArray.sort((a, b) => a - b);
     for (let i = 1; i < preparedArray.length; i++) {
       if (preparedArray[i] === preparedArray[i - 1]) {
         preparedArray.splice(i, 1);
@@ -35,7 +36,7 @@ class Tree {
   }
 
   insert(value) {
-    if (!this.root) return null;
+    if (!this.root || value === undefined) return null;
 
     let cursor = this.root;
     while (cursor.data !== value) {
@@ -49,7 +50,20 @@ class Tree {
     }
     return cursor;
   }
+
+  find(value) {
+    if (!this.root || value === undefined) return null;
+
+    let cursor = this.root;
+    while (cursor && cursor.data !== value) {
+      cursor = (cursor.data > value) ? cursor.left : cursor.right;
+    }
+    return cursor;
+  }
 }
+
+const tree = new Tree([1, 2, 3, 4]);
+prettyPrint(tree.root);
 
 function getArray(length) {
   const array = [];
